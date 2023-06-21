@@ -1,0 +1,22 @@
+name: CI - Lint and Test
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+env:
+    DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+    JWT_SECRET: ${{ secrets.JWT_SECRET }}
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: 📦 Install modules
+              run: npm install
+            - name: 🔧 Run ESLint
+              run: npm run lint
+            - name: 📝 Run Jest
+              run: npm run test

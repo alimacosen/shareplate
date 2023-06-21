@@ -1,0 +1,978 @@
+---
+openapi: 3.0.3
+info:
+    title: SharePlate API Doc
+    description: This is the RESTful API Docs for SDA for team 2
+    version: 0.0.2
+servers:
+    - url: http://localhost:3000/api/
+tags:
+    - name: Customer
+      description: Operations about Customer
+    - name: Food
+      description: Operations about food
+    - name: Shop
+      description: Operations about shop
+    - name: Order
+      description: Operations about Order
+
+paths:
+    "/api/customers/me":
+        get:
+            tags:
+                - Customer
+            summary: Get customer by token
+            description: Obtain user information by token
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Customer"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/customers":
+        post:
+            tags:
+                - Customer
+            summary: Create customer
+            description: Create a new customer.
+            requestBody:
+                description: email and password
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
+                            example:
+                                username: admin
+                                password: adminPassword
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                    token:
+                                        type: string
+                                example:
+                                    id: 632b58c9878188af6c4d8075
+                                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWE4ZTRjNDhkNmQ1ZGYzMzM3MWJmZSIsInR5cGUiOjEsImlhdCI6MTY3OTQ2MTk2NCwiZXhwIjoxNzEwOTk3OTY0fQ.G-TpWhojU-9zm97XXS35Mgp2ed4mWoYWBPZQZRaVeto
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/customers/sessions":
+        post:
+            tags:
+                - Customer
+            summary: Login
+            description: Verify email and password, then return jwt token
+            requestBody:
+                description: email and password
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
+                            example:
+                                username: admin
+                                password: adminPassword
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                    token:
+                                        type: string
+                                example:
+                                    id: 632b58c9878188af6c4d8075
+                                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjMyYjU4Yzk4NzgxODhhZjZjNGQ4MDc1IiwiaWF0IjoxNTE2MjM5MDIyfQ.PTgD-8uBUOwxnkBwTn_A76LXfAF6xcR7JmsleHnSlDs
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/customers/{customer_id}":
+        get:
+            tags:
+                - Customer
+            description: get customer by id
+            parameters:
+                - name: customer_id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: 641ce90385ccdb788fee248a
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Customer"
+                "500":
+                    description: Internal Server Error
+        patch:
+            tags:
+                - Customer
+            description: modify customer information
+            parameters:
+                - name: customer_id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: 641ce90385ccdb788fee248a
+            requestBody:
+                description: updated customer information
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Customer"
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Customer"
+                "500":
+                    description: Internal Server Error
+    "/api/customers/{customer_id}/reviews":
+        post:
+            tags:
+                - Customer
+            description: get customer by id
+            parameters:
+                - name: customer_id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: 641ce90385ccdb788fee248a
+            requestBody:
+                description: content and rating
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                rating:
+                                    type: number
+                            example:
+                                content: This is a great shop!
+                                rating: 3
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Customer"
+                "500":
+                    description: Internal Server Error
+    ########## Shop API ##########
+    "/api/shops/me":
+        get:
+            tags:
+                - Shop
+            summary: Get shop by token
+            description: Obtain shop information by token
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Shop"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/shops":
+        post:
+            tags:
+                - Shop
+            summary: Create shop
+            description: Create a new shop.
+            requestBody:
+                description: username and password
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
+                            example:
+                                username: Starbucks
+                                password: starbucksPassword
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                    token:
+                                        type: string
+                                example:
+                                    id: 632b58c9878188af6c4d8075
+                                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWE4ZTRjNDhkNmQ1ZGYzMzM3MWJmZSIsInR5cGUiOjEsImlhdCI6MTY3OTQ2MTk2NCwiZXhwIjoxNzEwOTk3OTY0fQ.G-TpWhojU-9zm97XXS35Mgp2ed4mWoYWBPZQZRaVeto
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/shops/sessions":
+        post:
+            tags:
+                - Shop
+            summary: Login
+            description: Verify username and password, then return jwt token
+            requestBody:
+                description: username and password
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
+                            example:
+                                username: Starbucks
+                                password: starbucksPassword
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                    token:
+                                        type: string
+                                example:
+                                    id: 632b58c9878188af6c4d8075
+                                    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjMyYjU4Yzk4NzgxODhhZjZjNGQ4MDc1IiwiaWF0IjoxNTE2MjM5MDIyfQ.PTgD-8uBUOwxnkBwTn_A76LXfAF6xcR7JmsleHnSlDs
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/shops/{shop_id}":
+        get:
+            tags:
+                - Shop
+            description: get shop by id
+            parameters:
+                - name: shop_id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: 641ce90385ccdb788fee248a
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Shop"
+                "500":
+                    description: Internal Server Error
+        patch:
+            tags:
+                - Shop
+            description: modify shop information
+            parameters:
+                - name: shop_id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      example: 641ce90385ccdb788fee248a
+            requestBody:
+                description: updated shop information
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Shop"
+            responses:
+                "200":
+                    description: successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Shop"
+                "500":
+                    description: Internal Server Error
+
+    "/api/orders/{id}":
+        get:
+            tags:
+                - Order
+            summary: Get order by order id
+            description: Obtain order information by order id
+            parameters:
+                - in: path
+                  required: true
+                  name: id
+                  schema:
+                      type: string
+                      description: "Order ID"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Order"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+        patch:
+            tags:
+                - Order
+            summary: Update order by id
+            description: Update an exsisting order status by order id, and get the order id in response
+            parameters:
+                - in: path
+                  required: true
+                  name: id
+                  schema:
+                      type: string
+                      description: "Order ID"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            description: The target order status going to shift to. 1 for comfirmed, 2 for completed, 3 for canceled. You can only change the order status from 0 to 1, from 1 to 2, from 0 to 3, from 1 to 3.
+                            properties:
+                                nextStatus:
+                                    type: number
+                                    format: integer
+                                    example: 1
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    orderId:
+                                        type: string
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/orders":
+        get:
+            tags:
+                - Order
+            summary: "Get orders by user ID or shop ID"
+            description: query parameter userId and shopId must exist and only one can exist in this URL
+            parameters:
+                - in: query
+                  name: userId
+                  required: false
+                  schema:
+                      type: string
+                      description: "User ID for filtering orders"
+                - in: query
+                  name: shopId
+                  required: false
+                  schema:
+                      type: string
+                      description: "Shop ID for filtering orders"
+            responses:
+                200:
+                    description: "A list of orders"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Order"
+                400:
+                    description: "Bad request"
+                500:
+                    description: "Internal server error"
+        post:
+            tags:
+                - Order
+            summary: Create order
+            description: Create a new order and get the order id in response
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - userId
+                                - shopId
+                                - items
+                                - type
+                            properties:
+                                userId:
+                                    type: string
+                                    description: User ID who makes the order
+                                    example: 642f8b709330e95142fc1at6
+                                shopId:
+                                    type: string
+                                    description: Shop ID who receives the order
+                                    example: 642f8b709330e95142fc1af29
+                                items:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            foodId:
+                                                type: string
+                                                description: Request Food ID in this order
+                                                example: 642f8b709330eg7142fc1ac84
+                                            quantity:
+                                                type: number
+                                                format: integer
+                                                description: Requested quantity in this order
+                                                example: 2
+                                type:
+                                    type: number
+                                    format: integer
+                                    description: Order type. 0 for basic, 1 for to-go boxes, 2 for own bowl, 3 for curbside pickup
+                                    example: 1
+                                boxNum:
+                                    type: number
+                                    format: integer
+                                    description: Number of to-go boxes required
+                                    example: 2
+                                pickupLocation:
+                                    type: string
+                                    description: Curbside pickup location, choices offered by the shops.
+                                    example: Area B of No. 2 parking lot
+                                carInfo:
+                                    type: object
+                                    properties:
+                                        brand:
+                                            type: string
+                                            description: car brand name
+                                            example: BMW
+                                        color:
+                                            type: string
+                                            description: color of your car
+                                            example: Red
+                                        plateNo:
+                                            type: string
+                                            description: plate number
+                                            example: 8EFY253
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    orderId:
+                                        type: string
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+
+    "/api/foods":
+        get:
+            tags:
+                - Food
+            summary: Get all food
+            description: Get all food in database
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Food"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+        post:
+            tags:
+                - Food
+            summary: Create a new food
+            description: Vendor post a new food and get the new food id in response
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Food"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+    "/api/foods/{id}":
+        get:
+            tags:
+                - Food
+            summary: Get food by id
+            description: Get all information of an exsisting food by food id in response
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Food"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+        patch:
+            tags:
+                - Food
+            summary: Update food
+            description: Update an exisiting food information and get the food id in response
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Food"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+        delete:
+            tags:
+                - Food
+            summary: Delete food
+            description: Delete an exisiting food and get the deleted food id in response
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Food"
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "500":
+                    description: Internal Server Error
+
+######################################################
+#                     Schemas                        #
+######################################################
+components:
+    schemas:
+        Customer:
+            type: object
+            required:
+                - username
+                - password
+            properties:
+                _id:
+                    type: string
+                    description: User ID
+                    example: 610dc52e987e7f3b18d8d990
+                email:
+                    type: string
+                    description: User's email
+                    example: johndoe@gmail.com
+                    minLength: 3
+                password:
+                    type: string
+                    description: User's password
+                    example: secret
+                subscriptShops:
+                    type: array
+                    description: An array of shop IDs that the user has subscribed to
+                    items:
+                        type: string
+                        format: objectId
+                reviews:
+                    type: array
+                    description: An array of reviews created by the user
+                    items:
+                        type: object
+                        properties:
+                            _id:
+                                type: string
+                                description: Review ID
+                                example: 610dc5ba987e7f3b18d8d994
+                            reviewer:
+                                type: string
+                                description: Reviewer's user ID
+                                example: 610dc52e987e7f3b18d8d990
+                                format: objectId
+                            createdTime:
+                                type: string
+                                description: Timestamp of the review creation
+                                example: "2022-03-23T08:18:19.961Z"
+                                format: date-time
+                            content:
+                                type: string
+                                description: Content of the review
+                                example: This is a great user!
+                            rating:
+                                type: integer
+                                description: Rating of the review
+                                example: 5
+                                minimum: 0
+                                maximum: 5
+            example:
+                _id: 610dc52e987e7f3b18d8d990
+                email: johm@gmail.com
+                subscriptShops: []
+                reviews:
+                    - _id: 610dc5ba987e7f3b18d8d994
+                      reviewer: 610dc52e987e7f3b18d8d990
+                      createdTime: "2022-03-23T08:18:19.961Z"
+                      content: This is a great user!
+                      rating: 5
+        Shop:
+            type: object
+            required:
+                - _id
+                - shopName
+                - location
+            properties:
+                _id:
+                    type: string
+                    description: Shop ID
+                    example: 641a8e4c48d6d5df33371bfe
+                shopName:
+                    type: string
+                    description: Shop name
+                    example: Shop A
+                location:
+                    type: object
+                    properties:
+                        coordinates:
+                            type: array
+                            items:
+                                type: number
+                            description: The coordinates of the shop location (longitude, latitude)
+                            example: [-122.421778, 37.783943]
+                    description: The location of the shop
+                description:
+                    type: string
+                    description: Shop description
+                    example: Best coffee in town!
+                shopType:
+                    type: array
+                    items:
+                        type: string
+                    description: The types of the shop
+                    example: [coffee, bakery]
+                followers:
+                    type: array
+                    items:
+                        type: string
+                        format: objectId
+                    description: The IDs of the users who follow this shop
+                menu:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            name:
+                                type: string
+                                description: Name of the menu item
+                                example: Cappuccino
+                            price:
+                                type: number
+                                format: double
+                                description: Price of the menu item
+                                example: 3.99
+                    description: The menu of the shop
+                available:
+                    type: boolean
+                    description: The availability status of the shop
+                    example: false
+                reviews:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            _id:
+                                type: string
+                                description: Review ID
+                                example: 610dc5ba987e7f3b18d8d994
+                            reviewer:
+                                type: string
+                                description: Reviewer's user ID
+                                example: 610dc52e987e7f3b18d8d990
+                                format: objectId
+                            createdTime:
+                                type: string
+                                description: Timestamp of the review creation
+                                example: "2022-03-23T08:18:19.961Z"
+                                format: date-time
+                            content:
+                                type: string
+                                description: Content of the review
+                                example: This is a great shop!
+                            rating:
+                                type: integer
+                                description: Rating of the review
+                                example: 5
+                                minimum: 0
+                                maximum: 5
+                    description: The reviews of the shop
+                __v:
+                    type: integer
+                    description: The version of the shop document
+                    example: 0
+            example:
+                _id: 641a8e4c48d6d5df33371bfe
+                shopName: Shop A
+                location:
+                    coordinates: [-122.421778, 37.783943]
+                description: Best coffee in town!
+                shopType: [coffee, bakery]
+                followers: []
+                menu:
+                    - name: Cappuccino
+                      price: 3.99
+                available: false
+                reviews: []
+                __v: 0
+        Order:
+            type: object
+            required:
+                - userId
+                - shopId
+                - items
+                - type
+            properties:
+                _id:
+                    type: string
+                    description: Order ID
+                    example: 642f8b709330e95142fc1a74
+                userId:
+                    type: string
+                    description: User ID who makes the order
+                    example: 642f8b709330e95142fc1at6
+                shopId:
+                    type: string
+                    description: Shop ID who receives the order
+                    example: 642f8b709330e95142fc1af29
+                createdTime:
+                    type: string
+                    description: Time of the order being created
+                    example: "2022-03-23T08:18:19.961Z"
+                items:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            foodId:
+                                type: string
+                                description: Request Food ID in this order
+                                example: 642f8b709330eg7142fc1ac84
+                            quantity:
+                                type: number
+                                format: integer
+                                description: Requested quantity in this order
+                                example: 2
+                    description: Requested food ID and the quantity
+                foods:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            foodName:
+                                type: string
+                                description: Request Food ID in this order
+                                example: 642f8b709330eg7142fc1ac84
+                            quantity:
+                                type: number
+                                format: integer
+                                description: Requested quantity in this order
+                                example: 2
+                            price:
+                                type: number
+                                format: double
+                                description: Unit price for this food
+                                example: 4.99
+                            description:
+                                type: string
+                                description: Food details
+                                example: Fresh 12 inches pizza with bacon and onion.
+                status:
+                    type: number
+                    format: integer
+                    description: Order current status. 0 for pending, 1 for comfirmed, 2 for completed, 3 for canceled
+                    example: 1
+                linkedReviews:
+                    type: object
+                    properties:
+                        _id:
+                            type: string
+                            description: Review ID for this order
+                            example: 642f8b709330eg7142fc1ac83
+                        customerId:
+                            type: string
+                            description: Customer ID related to this review
+                            example: 642f8b709330eg7142fc1ac84
+                        shopId:
+                            type: string
+                            description: Shop ID related to this review
+                            example: 642f8b709330eg7142fc1ac88
+                price:
+                    type: number
+                    format: double
+                    description: Final price of this order
+                    example: 30.75
+                type:
+                    type: number
+                    format: integer
+                    description: Order type. 0 for basic, 1 for to-go boxes, 2 for own bowl, 3 for curbside pickup
+                    example: 1
+                boxNum:
+                    type: number
+                    format: integer
+                    description: Number of to-go boxes required
+                    example: 2
+                pickupLocation:
+                    type: string
+                    description: Curbside pickup location, choices offered by the shops.
+                    example: Area B of No. 2 parking lot
+                carInfo:
+                    type: object
+                    properties:
+                        brand:
+                            type: string
+                            description: car brand name
+                            example: BMW
+                        color:
+                            type: string
+                            description: color of your car
+                            example: Red
+                        plateNo:
+                            type: string
+                            description: plate number
+                            example: 8EFY253
+                __v:
+                    type: integer
+                    description: The version of the order document
+                    example: 0
+            example:
+                _id: 642f8b709330e95142fc1a74
+                userId: 642f8b709330e95142fc1at6
+                shopId: 642f8b709330e95142fc1af29
+                createdTime: "2022-03-23T08:18:19.961Z"
+                items: [{ foodId: 642f8b709330e95142fc1a74, quantity: 2 }]
+                foods: [{ foodName: Pizza-12, price: 15, quantity: 2, description: Fresh 12 inches pizza with bacon and onion. }]
+                status: 1
+                linkedReviews: { _id: 642f8b709330eg7142fc1ac83, customerId: 642f8b709330eg7142fc1ac84, shopId: 642f8b709330eg7142fc1ac88 }
+                price: 30.75
+                type: 1
+                boxNum: 2
+                pickupLocation: Area B of No. 2 parking lot
+                carInfo: { brand: BMW, color: Red, plateNo: 8EFY253 }
+                __v: 0
+        Food:
+            type: object
+            required:
+                - foodName
+                - price
+                - quantity
+            properties:
+                _id:
+                    type: string
+                    description: Food ID
+                    example: 64326799bca0c92eaf2824e2
+                foodName:
+                    type: string
+                    description: Food name
+                    example: Pizza-12 inches
+                price:
+                    type: number
+                    format: double
+                    description: Unit price of the food
+                    example: 4.99
+                quantity:
+                    type: number
+                    format: integer
+                    description: Inventory of the food
+                    example: 10
+                description:
+                    type: string
+                    description: Food details
+                    example: Fresh 12 inches pizza with bacon and onion.
+                __v:
+                    type: integer
+                    description: The version of the food document
+                    example: 0
+            example:
+                _id: 64326799bca0c92eaf2824e2
+                foodName: Pizza-12 inches
+                price: 4.99
+                quantity: 10
+                description: Fresh 12 inches pizza with bacon and onion.
+                __v: 0

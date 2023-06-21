@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest"
+  },
+  "extends": [
+    "plugin:prettier/recommended",
+    "prettier",
+    "plugin:react-hooks/recommended",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["eslint:recommended"],
+      "plugins": ["prettier", "react", "react-hooks", "unused-imports"],
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      },
+      "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "error",
+        "react/prop-types": "error",
+        "react/react-in-jsx-scope": "off",
+        "react/no-unescaped-entities": "off",
+        "no-unused-vars": "warn",
+        "unused-imports/no-unused-imports": "error",
+        "prefer-const": "error",
+        "react/no-unstable-nested-components": "warn",
+        "no-case-declarations": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["cypress/*"]
+}
