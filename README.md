@@ -3,13 +3,13 @@
 ## Overview
 
 ### Description and Declaration
-This is the team project of course 18-653 in Carnegie Mellon University.   
-This project is only for studying purpose. You CAN NOT share or use any parts to conduct commercial activities or to obtain profit from them without permission and authorization.
+This is a course team project at Carnegie Mellon University.   
+This project is only for studying purposes. You CAN NOT share or use any parts to conduct commercial activities or to obtain profit from them without permission and authorization.
 
 ### Intro
 The frontend and backend repo is under folder `codebase/`  
 The related documentations are under folder `docs/`  
-For a quick demo of SharePlate project, please refer to `demo.pdf`
+For a quick demo of the SharePlate project, please refer to `demo.pdf`
 
 ### Architecture and Design
 - architecture
